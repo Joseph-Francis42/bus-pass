@@ -20,6 +20,11 @@ export default function Login() {
         alert('Invalid admin credentials!')
       }
     } else {
+      const email = identifier.trim().toLowerCase();
+      if (!email.endsWith('@sjcetpalai.ac.in')) {
+        alert('Access denied! Only email addresses ending with @sjcetpalai.ac.in are allowed to log in.');
+        return;
+      }
       localStorage.setItem('token', 'user-token')
       localStorage.setItem('role', 'user')
       navigate('/book')
