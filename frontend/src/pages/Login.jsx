@@ -6,10 +6,12 @@ export default function Login() {
   const [loginType, setLoginType] = useState('user')
   const [identifier, setIdentifier] = useState('')
   const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
   const navigate = useNavigate()
 
   const handleLogin = async (e) => {
     e.preventDefault()
+    setError('')
     
     if (loginType === 'admin') {
       if (identifier === 'admin' && password === '12345admin') {
@@ -17,12 +19,12 @@ export default function Login() {
         localStorage.setItem('role', 'admin')
         navigate('/admin')
       } else {
-        alert('Invalid admin credentials!')
+        setError('Incorrect username or password')
       }
     } else {
       const email = identifier.trim().toLowerCase();
       if (!email.endsWith('@sjcetpalai.ac.in')) {
-        alert('Access denied! Only email addresses ending with @sjcetpalai.ac.in are allowed to log in.');
+        setError('Incorrect email')
         return;
       }
       localStorage.setItem('token', 'user-token')
@@ -35,13 +37,13 @@ export default function Login() {
     <div className="glass-card">
       <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem', borderBottom: '1px solid var(--glass-border)', paddingBottom: '1rem' }}>
         <button 
-          onClick={() => { setLoginType('user'); setIdentifier(''); setPassword(''); }}
+          onClick={() => { setLoginType('user'); setIdentifier(''); setPassword(''); setError(''); }}
           style={{ flex: 1, background: 'transparent', border: 'none', color: loginType === 'user' ? 'var(--primary-color)' : '#94a3b8', fontWeight: 'bold', fontSize: '1.1rem', cursor: 'pointer', borderBottom: loginType === 'user' ? '2px solid var(--primary-color)' : 'none', paddingBottom: '0.5rem' }}
         >
           User Login
         </button>
         <button 
-          onClick={() => { setLoginType('admin'); setIdentifier(''); setPassword(''); }}
+          onClick={() => { setLoginType('admin'); setIdentifier(''); setPassword(''); setError(''); }}
           style={{ flex: 1, background: 'transparent', border: 'none', color: loginType === 'admin' ? 'var(--primary-color)' : '#94a3b8', fontWeight: 'bold', fontSize: '1.1rem', cursor: 'pointer', borderBottom: loginType === 'admin' ? '2px solid var(--primary-color)' : 'none', paddingBottom: '0.5rem' }}
         >
           Admin Login
@@ -57,7 +59,7 @@ export default function Login() {
             type={loginType === 'user' ? 'email' : 'text'} 
             id="identifier" 
             value={identifier}
-            onChange={(e) => setIdentifier(e.target.value)}
+            onChange={(e) => { setIdentifier(e.target.value); setError(''); }}
             placeholder={loginType === 'user' ? 'Enter your email' : 'Enter username'} 
             required 
           />
@@ -68,11 +70,26 @@ export default function Login() {
             type="password" 
             id="password" 
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => { setPassword(e.target.value); setError(''); }}
             placeholder="Enter your password" 
             required 
           />
         </div>
+        {error && (
+          <div style={{ 
+            color: '#f87171', 
+            background: 'rgba(239, 68, 68, 0.1)', 
+            padding: '0.75rem 1rem', 
+            borderRadius: '8px', 
+            border: '1px solid rgba(239, 68, 68, 0.2)',
+            fontSize: '0.9rem', 
+            marginBottom: '1.25rem',
+            textAlign: 'left',
+            fontWeight: '500'
+          }}>
+            {error}
+          </div>
+        )}
         <button type="submit" className="btn">Sign In</button>
       </form>
     </div>
