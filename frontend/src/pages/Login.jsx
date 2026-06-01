@@ -23,8 +23,9 @@ export default function Login() {
       }
     } else {
       const email = identifier.trim().toLowerCase();
-      if (!email.endsWith('@sjcetpalai.ac.in')) {
-        setError('Incorrect email')
+      const emailRegex = /^[a-z0-9._%+-]+[0-9]+@([a-z0-9.-]+\.)?sjcetpalai\.ac\.in$/;
+      if (!emailRegex.test(email)) {
+        setError('Incorrect email');
         return;
       }
       localStorage.setItem('token', 'user-token')
