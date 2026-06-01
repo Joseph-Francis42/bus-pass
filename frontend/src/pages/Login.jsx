@@ -23,8 +23,7 @@ export default function Login() {
       }
     } else {
       const email = identifier.trim().toLowerCase();
-      const emailRegex = /^[a-z0-9._%+-]+[0-9]+@([a-z0-9.-]+\.)?sjcetpalai\.ac\.in$/;
-      if (!emailRegex.test(email)) {
+      if (!email.endsWith('@sjcetpalai.ac.in') && !email.endsWith('.sjcetpalai.ac.in')) {
         setError('Incorrect email');
         return;
       }
